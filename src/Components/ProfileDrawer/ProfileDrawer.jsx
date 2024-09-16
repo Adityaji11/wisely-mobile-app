@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileDrawer = ({ onClose }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.drawerContainer}>
       {/* Close button */}
@@ -17,7 +20,10 @@ const ProfileDrawer = ({ onClose }) => {
       <Text style={styles.profileName}>John Doe</Text>
 
       {/* Options */}
-      <TouchableOpacity style={styles.drawerItem}>
+      <TouchableOpacity 
+        style={styles.drawerItem} 
+        onPress={() => navigation.navigate('MyAlbum')} // Ensure 'MyAlbum' is a defined route
+      >
         <Text style={styles.drawerItemText}>My Album</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.drawerItem}>
@@ -30,6 +36,7 @@ const ProfileDrawer = ({ onClose }) => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   drawerContainer: {
     flex: 1,

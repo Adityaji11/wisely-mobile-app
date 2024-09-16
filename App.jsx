@@ -69,6 +69,7 @@ import ChatScreen from './src/Components/ChatScreen/ChatScreen';
 import FavScreen from './src/Components/FavScreen/FavScreen';
 import StoreScreen from './src/Components/StoreScreen/StoreScreen';
 import ProfileDetail from './src/Components/ProfileGrid/ProfileDetail/ProfileDetail';
+import MyAlbum from './src/Components/MyAlbum/MyAlbum';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -117,6 +118,7 @@ const App = () => {
           component={ProfileDetail}
           options={{ headerShown: true, title: 'Profile' }}
         />
+          <Stack.Screen name="MyAlbum" options={{ headerShown: true, title: 'My Album' }} component={MyAlbum} />
       </Stack.Navigator>
     </NavigationContainer>
   );
