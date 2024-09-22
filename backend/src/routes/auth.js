@@ -17,5 +17,6 @@ router.get('/tauth', AuthController.tokenAuth);
 
 //Logout from the current session
 router.get('/logout', AuthController.logout);
+router.get('/verify-session', AuthController.verifySession);
 
 module.exports = router;

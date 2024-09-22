@@ -14,7 +14,7 @@ module.exports = function () {
         cookie: {
             secure: process.env.ENVIRONMENT !== "development", // if true: only transmit cookie over https
             httpOnly: true, // if true: prevents client side JS from reading the cookie
-            maxAge: 1000 * 60 * 30, // session max age in milliseconds
+            maxAge: 10000 * 600 * 300, // session max age in milliseconds
             sameSite: 'lax' // make sure sameSite is not none
         }
     })
