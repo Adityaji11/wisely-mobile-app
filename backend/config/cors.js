@@ -1,12 +1,12 @@
 const cors = require('cors');
 
-const allowedDomains = ['http://localhost:3000', 'http://localhost:9000'];
+const allowedDomains = ['http://localhost:5000', 'http://localhost:9000'];
 const regex = new RegExp(`^https?://([a-zA-Z0-9-]+\\.)*(${allowedDomains.join('|').replace(/\./g, '\\.')})$`);
 
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests with no origin (e.g., Postman or server-to-server requests)
-        if (!origin) {
+        if (!origin || allowedDomains.includes(origin)) {
             return callback(null, true);
         }
 

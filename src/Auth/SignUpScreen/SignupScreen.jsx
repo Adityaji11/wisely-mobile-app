@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { signup } from '../redux/slices/authSlice';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { signup } from '../../Redux/Slices/authSlice';
 
 const SignupScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
@@ -9,54 +9,64 @@ const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const { status, error } = useSelector((state) => state.auth);
 
   const handleSignup = () => {
-    dispatch(signup({ firstName, lastName, email, password })).unwrap()
-      .then(() => {
-        Alert.alert('Signup Successful', 'You can now log in.');
-        navigation.navigate('Login');
-      })
-      .catch((err) => Alert.alert('Signup Failed', err.message || 'Please try again.'));
+    dispatch(signup({ firstName, lastName, email, password }));
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Signup</Text>
       <TextInput
-        style={styles.input}
         placeholder="First Name"
+        style={styles.input}
         value={firstName}
         onChangeText={setFirstName}
       />
       <TextInput
-        style={styles.input}
         placeholder="Last Name"
+        style={styles.input}
         value={lastName}
         onChangeText={setLastName}
       />
       <TextInput
-        style={styles.input}
         placeholder="Email"
+        style={styles.input}
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
       />
       <TextInput
-        style={styles.input}
         placeholder="Password"
+        style={styles.input}
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
       />
-      <Button title="Signup" onPress={handleSignup} />
+      {status === 'loading' && <Text>Loading...</Text>}
+      {error && <Text style={styles.error}>{error}</Text>}
+      <Button title="Sign Up" onPress={handleSignup} />
+      <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, marginBottom: 20 },
-  input: { borderWidth: 1, borderColor: '#ccc', marginBottom: 15, padding: 10, borderRadius: 5 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 16,
+  },
 });
 
 export default SignupScreen;

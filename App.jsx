@@ -10,6 +10,9 @@ import FavScreen from './src/Components/FavScreen/FavScreen';
 import StoreScreen from './src/Components/StoreScreen/StoreScreen';
 import ProfileDetail from './src/Components/ProfileGrid/ProfileDetail/ProfileDetail';
 import MyAlbum from './src/Components/MyAlbum/MyAlbum';
+import LoginScreen from './src/Auth/LoginScreen/LoginScreen';
+import SignupScreen from './src/Auth/SignUpScreen/SignupScreen';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -44,23 +47,53 @@ const MainTabs = () => (
   </Tab.Navigator>
 );
 
+const AuthStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Login"
+      component={LoginScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Signup"
+      component={SignupScreen}
+      options={{ headerShown: false }}
+    />
+  </Stack.Navigator>
+);
+
 const App = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+    <Stack.Navigator>
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProfileDetail"
+            component={ProfileDetail}
+            options={{ headerShown: true, title: 'Profile' }}
+          />
+          <Stack.Screen
+            name="MyAlbum"
+            component={MyAlbum}
+            options={{ headerShown: true, title: 'My Album' }}
+          />
+        </>
+      ) : (
         <Stack.Screen
-          name="MainTabs"
-          component={MainTabs}
+          name="Auth"
+          component={AuthStack}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="ProfileDetail"
-          component={ProfileDetail}
-          options={{ headerShown: true, title: 'Profile' }}
-        />
-          <Stack.Screen name="MyAlbum" options={{ headerShown: true, title: 'My Album' }} component={MyAlbum} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      )}
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 };
 
