@@ -10,8 +10,6 @@ const LoginScreen = ({ navigation }) => {
   const { status, error } = useSelector((state) => state.auth);
 
   const handleLogin = () => {
-    console.log("{ email, password }", email, password );
-    
     dispatch(login({ email, password }));
   };
 

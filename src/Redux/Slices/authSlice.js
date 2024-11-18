@@ -1,5 +1,4 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
 import axiosInstance from '../../utils/axiosInstance';
 
 const API_BASE = 'http://10.0.2.2:5000/api/auth/'; // Replace with your backend URL
@@ -40,9 +39,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, {rejectWithValue}) => {
     try {
-      const response = await axiosInstance.post(`${API_BASE}/logout`, {
-        refreshToken: 'dummy_token',
-      }); // Send refresh token if needed
+      const response = await axiosInstance.post(`${API_BASE}/logout`);
       return response.data.message; // success message from backend
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Logout failed');
@@ -50,22 +47,56 @@ export const logout = createAsyncThunk(
   },
 );
 
-// Thunk for refreshing session
+export const verifySession = createAsyncThunk(
+  'auth/verifySession',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      // Dispatch the refreshAccessToken action to get a new access token
+      const result = await dispatch(refreshSession());
+
+      // If the refresh token action fails (rejected)
+      if (result.type === 'auth/refreshAccessToken/rejected') {
+        return rejectWithValue('Failed to refresh session');
+      }
+
+      // If the refresh token action succeeded, access the new access token
+      const accessToken = result.payload.data.accessToken;
+
+      // Now use the access token to verify the session
+      const sessionResponse = await axiosInstance.post(
+        `${API_BASE}/verify-session`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Pass the access token for session verification
+          },
+        }
+      );
+
+      // Return the user data if session is valid
+      return sessionResponse.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Session invalid');
+    }
+  }
+);
+
+
+// Thunk for refreshing session (when access token expires)
 export const refreshSession = createAsyncThunk(
   'auth/refreshSession',
-  async (_, {rejectWithValue}) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`${API_BASE}/refresh-token`, {
-        refreshToken: 'dummy_token',
-      });
-      return response.data.message;
+      const response = await axiosInstance.post(`${API_BASE}/refresh-token`);
+      console.log(response.data);
+      
+      return response.data; // Return the access token, not user data
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || 'Session refresh failed',
-      );
+      return rejectWithValue(error.response?.data?.message || 'Session refresh failed');
     }
-  },
+  }
 );
+
 
 // Slice
 const authSlice = createSlice({
@@ -108,6 +139,35 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, state => {
         state.isAuthenticated = false;
         state.user = null;
+      })
+      .addCase(verifySession.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(verifySession.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.user = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(verifySession.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      // Refreshing session (for expired access token)
+      .addCase(refreshSession.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(refreshSession.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.user = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(refreshSession.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });

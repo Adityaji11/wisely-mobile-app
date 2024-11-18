@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,7 +12,8 @@ import ProfileDetail from './src/Components/ProfileGrid/ProfileDetail/ProfileDet
 import MyAlbum from './src/Components/MyAlbum/MyAlbum';
 import LoginScreen from './src/Auth/LoginScreen/LoginScreen';
 import SignupScreen from './src/Auth/SignUpScreen/SignupScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshSession, verifySession } from './src/Redux/Slices/authSlice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -63,7 +64,28 @@ const AuthStack = () => (
 );
 
 const App = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const { isAuthenticated, status } = useSelector((state) => state.auth);
+  useEffect(() => {
+    const checkSession = async () => {
+      const result = await dispatch(verifySession());
+      if (verifySession.rejected.match(result)) {
+        // If session is invalid, try refreshing the token
+        const refreshResult = await dispatch(refreshSession());
+        if (refreshSession.fulfilled.match(refreshResult)) {
+          // Retry session verification after successful token refresh
+          await dispatch(verifySession());
+        }
+      }
+    };
+
+    checkSession();
+  }, [dispatch]);
+
+  if (status === 'loading') {
+    return <></>; // Show a loading screen while verifying
+  }
   return (
     <NavigationContainer>
     <Stack.Navigator>
