@@ -26,7 +26,10 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({email, password}, {rejectWithValue}) => {
     try {
-      const response = await axiosInstance.post(`${API_BASE}/login`, {email, password});
+      const response = await axiosInstance.post(`${API_BASE}/login`, {
+        email,
+        password,
+      });
       return response.data.message; // success message from the backend
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -49,7 +52,7 @@ export const logout = createAsyncThunk(
 
 export const verifySession = createAsyncThunk(
   'auth/verifySession',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, {dispatch, rejectWithValue}) => {
     try {
       // Dispatch the refreshAccessToken action to get a new access token
       const result = await dispatch(refreshSession());
@@ -70,33 +73,33 @@ export const verifySession = createAsyncThunk(
           headers: {
             Authorization: `Bearer ${accessToken}`, // Pass the access token for session verification
           },
-        }
+        },
       );
 
       // Return the user data if session is valid
       return sessionResponse.data.user;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Session invalid');
+      return rejectWithValue(
+        error.response?.data?.message || 'Session invalid',
+      );
     }
-  }
+  },
 );
-
 
 // Thunk for refreshing session (when access token expires)
 export const refreshSession = createAsyncThunk(
   'auth/refreshSession',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       const response = await axiosInstance.post(`${API_BASE}/refresh-token`);
-      console.log(response.data);
-      
       return response.data; // Return the access token, not user data
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Session refresh failed');
+      return rejectWithValue(
+        error.response?.data?.message || 'Session refresh failed',
+      );
     }
-  }
+  },
 );
-
 
 // Slice
 const authSlice = createSlice({
@@ -140,7 +143,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
       })
-      .addCase(verifySession.pending, (state) => {
+      .addCase(verifySession.pending, state => {
         state.status = 'loading';
       })
       .addCase(verifySession.fulfilled, (state, action) => {
@@ -155,7 +158,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
       // Refreshing session (for expired access token)
-      .addCase(refreshSession.pending, (state) => {
+      .addCase(refreshSession.pending, state => {
         state.status = 'loading';
       })
       .addCase(refreshSession.fulfilled, (state, action) => {
