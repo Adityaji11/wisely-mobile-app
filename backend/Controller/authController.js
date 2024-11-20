@@ -121,3 +121,30 @@ exports.verifySession = async (req, res) => {
     res.status(200).json({user});
   });
 };
+
+exports.updateLocation = async (req, res) => {
+  try {
+    // Ensure middleware is used before this route
+    const userId = req.user.id; // Retrieve user ID from the decoded token
+    const { coordinates } = req.body;
+    console.log("coordinate" , coordinates);
+
+    if (!coordinates) {
+      return res.status(400).json({ error: 'Coordinates are required.' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    user.location = coordinates; // Update user location
+    await user.save();
+
+    res.status(200).json({ message: 'Location updated successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
