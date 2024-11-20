@@ -1,9 +1,37 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity ,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../Redux/Slices/authSlice';
 
 const ProfileDrawer = ({ onClose }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to log out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Logout', 
+          style: 'destructive',
+          onPress: () => {
+            dispatch(logout())
+              .unwrap()
+              .then(() => {
+                Alert.alert('Success', 'You have been logged out successfully.');
+                navigation.navigate('Login'); // Adjust to your login route
+              })
+              .catch((error) => {
+                Alert.alert('Error', error || 'Failed to log out.');
+              });
+          }
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   return (
     <View style={styles.drawerContainer}>
@@ -31,6 +59,9 @@ const ProfileDrawer = ({ onClose }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.drawerItem}>
         <Text style={styles.drawerItemText}>Settings</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,6 +103,18 @@ const styles = StyleSheet.create({
   },
   drawerItemText: {
     fontSize: 18,
+  },
+  logoutButton: {
+    marginTop: 30,
+    backgroundColor: '#d33',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  logoutButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
 
