@@ -1,7 +1,8 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axiosInstance';
 
-const API_BASE = 'http://10.0.2.2:5000/api/auth/'; // Replace with your backend URL
+// const API_BASE = 'http://10.0.2.2:5000/api/auth/'; // Replace with your backend URL
+const API_BASE = 'http://192.168.31.50:5000/api/auth/'; // Replace with your backend URL
 
 // Thunk for Signup
 export const signup = createAsyncThunk(
@@ -101,12 +102,26 @@ export const refreshSession = createAsyncThunk(
   },
 );
 
+// Thunk to update user location
+export const updateUserLocation = createAsyncThunk(
+  'user/updateLocation',
+  async ({ coordinates }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_BASE}/update-location`, { coordinates });
+      return response.data.message;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Failed to update location.');
+    }
+  }
+);
+
 // Slice
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     isAuthenticated: false,
     user: null,
+    location: null,
     status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
@@ -169,6 +184,17 @@ const authSlice = createSlice({
       .addCase(refreshSession.rejected, (state, action) => {
         state.isAuthenticated = false;
         state.user = null;
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(updateUserLocation.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserLocation.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.location = action.payload;
+      })
+      .addCase(updateUserLocation.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       });
