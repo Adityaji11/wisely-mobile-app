@@ -8,6 +8,8 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cacheControl = require('./config/cacheControl');
 const authRoutes = require('./Routes/authRoutes');
+const userRoutes = require('./Routes/userRoutes');
+
 
 /**
  * Parse request json
@@ -45,6 +47,8 @@ app.use(bodyParser.json());
  * All the API routes
  */
 app.use('/api/auth', authRoutes);
+app.use('/api/user-profile', userRoutes);
+
 
 const startServer = async () => {
   try {

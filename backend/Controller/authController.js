@@ -46,7 +46,7 @@ exports.login = (req, res, next) => {
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
-      res.status(200).json(Response.success('Login successful', {accessToken}));
+      res.status(200).json(Response.success('Login successful'));
       // res.status(200).json(Response.success('Login successful', {}));
     } catch (err) {
       res.status(500).json(Response.error('Something went wrong', err));
