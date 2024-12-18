@@ -17,6 +17,7 @@ exports.Users = async (req, res) => {
     res.status(500).json({error: error.message});
   }
 };
+
 /**
  * POST: Create or Update User Profile
  * @param {*} req
@@ -25,11 +26,12 @@ exports.Users = async (req, res) => {
 exports.userProfile = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { bio, age, gender, interestedIn } = req.body;
-    let { socialLinks } = req.body;
+    const {bio, age, gender, interestedIn} = req.body;
+    let {socialLinks} = req.body;
 
     // Ensure `socialLinks` is properly formatted
-    socialLinks = typeof socialLinks === "string" ? JSON.parse(socialLinks) : socialLinks;
+    socialLinks =
+      typeof socialLinks === 'string' ? JSON.parse(socialLinks) : socialLinks;
 
     // Clean up keys
     const instagram = socialLinks?.instagram?.trim() || null;
@@ -43,21 +45,21 @@ exports.userProfile = async (req, res) => {
 
     // Update or create a profile in the database
     const updatedProfile = await Profile.findOneAndUpdate(
-      { userId: userId },
+      {userId: userId},
       {
         bio,
         age,
         gender,
         interestedIn: JSON.parse(interestedIn),
-        socialLinks: { instagram, facebook },
+        socialLinks: {instagram, facebook},
         profileImage,
       },
-      { new: true, upsert: true } // Create if it doesn't exist
+      {new: true, upsert: true}, // Create if it doesn't exist
     );
 
     res.status(200).json(updatedProfile);
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({error: error.message});
   }
 };
