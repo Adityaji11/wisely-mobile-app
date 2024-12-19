@@ -8,6 +8,8 @@ import { refreshSession, updateUserLocation, verifySession } from './src/Redux/S
 import { requestLocationPermission } from './src/utils/helper';
 import MainTabs from './src/Components/layout/MainTabs';
 import AuthStack from './src/Components/layout/AuthStack';
+import EditProfile from './src/Components/ProfileDrawer/EditProfile/CreateEditProfile';
+import CreateEditProfile from './src/Components/ProfileDrawer/EditProfile/CreateEditProfile';
 
 
 const Stack = createStackNavigator();
@@ -92,6 +94,11 @@ const App = () => {
             name="MyAlbum"
             component={MyAlbum}
             options={{ headerShown: true, title: 'My Album' }}
+          />
+          <Stack.Screen
+            name="CreateEditProfile"
+            component={CreateEditProfile}
+            options={{ headerShown: false, title: 'Edit Profile' }}
           />
         </>
       ) : (

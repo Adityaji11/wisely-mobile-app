@@ -54,7 +54,7 @@ const ProfileDrawer = ({ onClose }) => {
       >
         <Text style={styles.drawerItemText}>My Album</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.drawerItem}>
+      <TouchableOpacity style={styles.drawerItem} onPress={() => navigation.navigate('CreateEditProfile')}>
         <Text style={styles.drawerItemText}>Edit Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.drawerItem}>
