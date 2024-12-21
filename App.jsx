@@ -88,7 +88,7 @@ const App = () => {
           <Stack.Screen
             name="ProfileDetail"
             component={ProfileDetail}
-            options={{ headerShown: true, title: 'Profile' }}
+            options={{ headerShown: false, title: '' }}
           />
           <Stack.Screen
             name="MyAlbum"
