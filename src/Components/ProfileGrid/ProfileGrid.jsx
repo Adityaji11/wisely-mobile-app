@@ -1,60 +1,121 @@
-import React from 'react';
-import { View, Image, Text, StyleSheet, FlatList, Dimensions ,TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useRef} from 'react';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+  DrawerLayoutAndroid,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import FilterBar from '../FilterBar/FilterBar';
+import ProfileDrawer from '../ProfileDrawer/ProfileDrawer';
 
 const profiles = [
-  { id: '1', name: 'Anjali', image: 'https://photosbook.in/wp-content/uploads/real-girl-pic62.jpg', online: true },
-  { id: '2', name: 'Rahul', image: 'https://i.pinimg.com/736x/a5/95/53/a59553b51e05985c0cafba435488aec2.jpg', online: false },
-  { id: '3', name: 'Akash', image: 'https://i.pinimg.com/originals/34/85/94/3485941c0634be887eca300b89bf48b1.jpg', online: true },
-  { id: '4', name: 'Somya', image: 'https://photosnow.org/wp-content/uploads/2024/04/cute-girl-pic_11.jpg', online: false },
-  { id: '5', name: 'Akansha', image: 'https://photosqn.com/wp-content/uploads/2024/04/hijab-girl-hide-face-pic-dp_13.webp', online: true },
-  { id: '6', name: 'Aman', image: 'https://i.pinimg.com/236x/c6/26/54/c62654f63b7788305a2a5309a4b848b1.jpg', online: false },
+  {
+    id: '1',
+    name: 'Anjali',
+    image: 'https://photosbook.in/wp-content/uploads/real-girl-pic62.jpg',
+    online: true,
+  },
+  {
+    id: '2',
+    name: 'Rahul',
+    image:
+      'https://i.pinimg.com/736x/a5/95/53/a59553b51e05985c0cafba435488aec2.jpg',
+    online: false,
+  },
+  {
+    id: '3',
+    name: 'Akash',
+    image:
+      'https://i.pinimg.com/originals/34/85/94/3485941c0634be887eca300b89bf48b1.jpg',
+    online: true,
+  },
+  {
+    id: '4',
+    name: 'Somya',
+    image:
+      'https://photosnow.org/wp-content/uploads/2024/04/cute-girl-pic_11.jpg',
+    online: false,
+  },
+  {
+    id: '5',
+    name: 'Akansha',
+    image:
+      'https://photosqn.com/wp-content/uploads/2024/04/hijab-girl-hide-face-pic-dp_13.webp',
+    online: true,
+  },
+  {
+    id: '6',
+    name: 'Aman',
+    image:
+      'https://i.pinimg.com/236x/c6/26/54/c62654f63b7788305a2a5309a4b848b1.jpg',
+    online: false,
+  },
 ];
 
 const ProfileGrid = () => {
+  const drawerRef = useRef(null);
   const navigation = useNavigation();
   const numColumns = 2;
   const size = Dimensions.get('window').width / numColumns - 16;
 
-  const handleFilterPress = (filter) => {
+  const handleFilterPress = filter => {
     console.log('Filter selected:', filter);
     // Add filtering logic here
   };
-  const handleProfilePress = (profile) => {
-    navigation.navigate('ProfileDetail', { profile });
+  const handleProfilePress = profile => {
+    navigation.navigate('ProfileDetail', {profile});
   };
-  
-  const renderItem = ({ item }) => (
+
+  const renderItem = ({item}) => (
     <TouchableOpacity onPress={() => handleProfilePress(item)}>
-    <View style={styles.profileCard}>
-      <Image source={{ uri: item.image }} style={[styles.profileImage, { width: size, height: size }]} />
-      <View style={styles.profileInfo}>
-        {item.online && <View style={styles.onlineDot} />}
-        <Text style={styles.name}>{item.name}</Text>
+      <View style={styles.profileCard}>
+        <Image
+          source={{uri: item.image}}
+          style={[styles.profileImage, {width: size, height: size}]}
+        />
+        <View style={styles.profileInfo}>
+          {item.online && <View style={styles.onlineDot} />}
+          <Text style={styles.name}>{item.name}</Text>
+        </View>
       </View>
+    </TouchableOpacity>
+  );
+
+  const drawerContent = (
+    <View style={styles.drawerContent}>
+      <ProfileDrawer />
     </View>
-  </TouchableOpacity>
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Add the custom header here */}
-      <CustomHeader />
+    <DrawerLayoutAndroid
+      ref={drawerRef}
+      drawerWidth={Dimensions.get('window').width * 0.75}
+      drawerPosition="left"
+      renderNavigationView={() => drawerContent}>
+      <View style={{flex: 1}}>
+        {/* Add the custom header here */}
+        <CustomHeader drawerRef={drawerRef} />
 
-      {/* Add the filter bar here */}
-      <FilterBar onFilterPress={handleFilterPress} />
+        {/* Add the filter bar here */}
+        <FilterBar onFilterPress={handleFilterPress} />
 
-      {/* Profile Grid */}
-      <FlatList
-        data={profiles}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={numColumns}
-        contentContainerStyle={styles.container}
-      />
-    </View>
+        {/* Profile Grid */}
+        <FlatList
+          data={profiles}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          numColumns={numColumns}
+          contentContainerStyle={styles.container}
+        />
+      </View>
+    </DrawerLayoutAndroid>
   );
 };
 
@@ -88,6 +149,15 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  drawerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+  },
+  drawerText: {
+    fontSize: 16,
   },
 });
 

@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity ,Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../Redux/Slices/authSlice';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../Redux/Slices/authSlice';
 
-const ProfileDrawer = ({ onClose }) => {
+const ProfileDrawer = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -12,49 +19,51 @@ const ProfileDrawer = ({ onClose }) => {
       'Confirm Logout',
       'Are you sure you want to log out?',
       [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Logout', 
+        {text: 'Cancel', style: 'cancel'},
+        {
+          text: 'Logout',
           style: 'destructive',
           onPress: () => {
             dispatch(logout())
               .unwrap()
               .then(() => {
-                Alert.alert('Success', 'You have been logged out successfully.');
+                Alert.alert(
+                  'Success',
+                  'You have been logged out successfully.',
+                );
                 navigation.navigate('Login'); // Adjust to your login route
               })
-              .catch((error) => {
+              .catch(error => {
                 Alert.alert('Error', error || 'Failed to log out.');
               });
-          }
+          },
         },
       ],
-      { cancelable: true }
+      {cancelable: true},
     );
   };
 
   return (
     <View style={styles.drawerContainer}>
-      {/* Close button */}
-      <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-        <Text style={styles.closeButtonText}>X</Text>
-      </TouchableOpacity>
-
       {/* Profile Picture */}
       <Image
-        source={{ uri: 'https://i.pinimg.com/236x/c6/26/54/c62654f63b7788305a2a5309a4b848b1.jpg' }} 
+        source={{
+          uri: 'https://i.pinimg.com/236x/c6/26/54/c62654f63b7788305a2a5309a4b848b1.jpg',
+        }}
         style={styles.profilePic}
       />
       <Text style={styles.profileName}>John Doe</Text>
 
       {/* Options */}
-      <TouchableOpacity 
-        style={styles.drawerItem} 
+      <TouchableOpacity
+        style={styles.drawerItem}
         onPress={() => navigation.navigate('MyAlbum')} // Ensure 'MyAlbum' is a defined route
       >
         <Text style={styles.drawerItemText}>My Album</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.drawerItem} onPress={() => navigation.navigate('CreateEditProfile')}>
+      <TouchableOpacity
+        style={styles.drawerItem}
+        onPress={() => navigation.navigate('CreateEditProfile')}>
         <Text style={styles.drawerItemText}>Edit Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.drawerItem}>
