@@ -5,6 +5,7 @@ import ProfileGrid from '../ProfileGrid/ProfileGrid';
 import ChatScreen from '../ChatScreen/ChatScreen';
 import FavScreen from '../FavScreen/FavScreen';
 import StoreScreen from '../StoreScreen/StoreScreen';
+import ProfileGridNavigator from './ProfileGridNavigator';
 
 const Tab = createBottomTabNavigator();
 const MainTabs = () => (
@@ -40,7 +41,7 @@ const MainTabs = () => (
     })}>
     <Tab.Screen
       name="Browse"
-      component={ProfileGrid}
+      component={ProfileGridNavigator}
       options={{headerShown: false}}
     />
     <Tab.Screen

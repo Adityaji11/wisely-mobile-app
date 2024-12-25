@@ -11,7 +11,7 @@ import {
   Keyboard,
   Animated,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {StackActions, useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -43,7 +43,7 @@ const ProfileDetail = ({route}) => {
           {backgroundColor: showHeader ? 'rgba(0, 0, 0, 0.9)' : 'transparent'},
         ]}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.dispatch(StackActions.pop(1))}
           style={styles.iconButton}>
           <MaterialIcons name="arrow-back" size={28} color="#fff" />
         </TouchableOpacity>
