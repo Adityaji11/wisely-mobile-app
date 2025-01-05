@@ -6,10 +6,9 @@ import MyAlbum from './src/Components/MyAlbum/MyAlbum';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshSession, updateUserLocation, verifySession } from './src/Redux/Slices/authSlice';
 import { requestLocationPermission } from './src/utils/helper';
-import MainTabs from './src/Components/layout/MainTabs';
 import AuthStack from './src/Components/layout/AuthStack';
-import EditProfile from './src/Components/ProfileDrawer/EditProfile/CreateEditProfile';
 import CreateEditProfile from './src/Components/ProfileDrawer/EditProfile/CreateEditProfile';
+import AppDrawer from './src/Components/layout/AppDrawer';
 
 
 const Stack = createStackNavigator();
@@ -81,14 +80,14 @@ const App = () => {
       {isAuthenticated ? (
         <>
           <Stack.Screen
-            name="MainTabs"
-            component={MainTabs}
+            name="AppDrawer"
+            component={AppDrawer}
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ProfileDetail"
             component={ProfileDetail}
-            options={{ headerShown: false, title: '' }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="MyAlbum"

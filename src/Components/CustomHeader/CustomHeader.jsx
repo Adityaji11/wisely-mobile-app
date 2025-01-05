@@ -3,15 +3,9 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapWebView from '../MapWebView/MapWebView';
 
-const CustomHeader = ({drawerRef}) => {
+const CustomHeader = ({navigation}) => {
   const [viewCount, setViewCount] = useState(4);
   const [mapVisible, setMapVisible] = useState(false);
-
-  const handleFilterButtonPress = () => {
-    if (drawerRef && drawerRef.current) {
-      drawerRef.current.openDrawer();
-    }
-  };
 
   const toggleMap = () => {
     setMapVisible(!mapVisible);
@@ -24,7 +18,8 @@ const CustomHeader = ({drawerRef}) => {
   return (
     <View>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={handleFilterButtonPress}>
+        {/* Open Drawer */}
+        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
           <Image
             source={{
               uri: 'https://i.pinimg.com/236x/c6/26/54/c62654f63b7788305a2a5309a4b848b1.jpg',
@@ -33,16 +28,19 @@ const CustomHeader = ({drawerRef}) => {
           />
         </TouchableOpacity>
 
+        {/* Explore Button */}
         <TouchableOpacity onPress={toggleMap}>
           <Text style={styles.exploreText}>Explore</Text>
         </TouchableOpacity>
 
+        {/* View Count */}
         <View style={styles.viewCountContainer}>
           <Icon name="eye-outline" size={24} color="#000" />
           <Text style={styles.viewCountText}>{viewCount}</Text>
         </View>
       </View>
-
+      
+      {/* MapWebView */}
       <MapWebView
         visible={mapVisible}
         onClose={toggleMap}
