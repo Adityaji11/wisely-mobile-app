@@ -1,7 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import MainTabs from './MainTabs';
 import ProfileDrawer from '../ProfileDrawer/ProfileDrawer';
+import ProfileGrid from '../ProfileGrid/ProfileGrid';
 
 const Drawer = createDrawerNavigator();
 
@@ -13,7 +13,7 @@ const AppDrawer = () => (
     }}
     drawerContent={(props) => <ProfileDrawer {...props} />}
   >
-    <Drawer.Screen name="MainTabs" component={MainTabs} />
+    <Drawer.Screen name="ProfileGrid" component={ProfileGrid} />
   </Drawer.Navigator>
 );
 

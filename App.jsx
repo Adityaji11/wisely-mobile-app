@@ -8,7 +8,7 @@ import { refreshSession, updateUserLocation, verifySession } from './src/Redux/S
 import { requestLocationPermission } from './src/utils/helper';
 import AuthStack from './src/Components/layout/AuthStack';
 import CreateEditProfile from './src/Components/ProfileDrawer/EditProfile/CreateEditProfile';
-import AppDrawer from './src/Components/layout/AppDrawer';
+import MainTabs from './src/Components/layout/MainTabs';
 
 
 const Stack = createStackNavigator();
@@ -79,9 +79,9 @@ const App = () => {
     <Stack.Navigator>
       {isAuthenticated ? (
         <>
-          <Stack.Screen
-            name="AppDrawer"
-            component={AppDrawer}
+            <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
             options={{ headerShown: false }}
           />
           <Stack.Screen

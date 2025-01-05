@@ -1,10 +1,10 @@
-import {Image, StyleSheet} from 'react-native';
 import React from 'react';
+import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ProfileGrid from '../ProfileGrid/ProfileGrid';
-import ChatScreen from '../ChatScreen/ChatScreen';
 import FavScreen from '../FavScreen/FavScreen';
 import StoreScreen from '../StoreScreen/StoreScreen';
+import AppDrawer from './AppDrawer';
+import ChatDrawer from './ChatDrawer';
 
 const Tab = createBottomTabNavigator();
 const MainTabs = () => (
@@ -13,23 +13,27 @@ const MainTabs = () => (
       tabBarIcon: ({focused}) => {
         let iconSource;
 
-        // Define image sources for each tab
-        if (route.name === 'Browse') {
-          iconSource = focused
-            ? require('../../assets/icons/search-engine.png')
-            : require('../../assets/icons/seo-and-web.png');
-        } else if (route.name === 'Inbox') {
-          iconSource = focused
-            ? require('../../assets/icons/chat.png')
-            : require('../../assets/icons/message.png');
-        } else if (route.name === 'Faves') {
-          iconSource = focused
-            ? require('../../assets/icons/favourite.png')
-            : require('../../assets/icons/heart.png');
-        } else if (route.name === 'Store') {
-          iconSource = focused
-            ? require('../../assets/icons/open.png')
-            : require('../../assets/icons/grocery-store.png');
+        switch (route.name) {
+          case 'Browse':
+            iconSource = focused
+              ? require('../../assets/icons/search-engine.png')
+              : require('../../assets/icons/seo-and-web.png');
+            break;
+          case 'Inbox':
+            iconSource = focused
+              ? require('../../assets/icons/chat.png')
+              : require('../../assets/icons/message.png');
+            break;
+          case 'Faves':
+            iconSource = focused
+              ? require('../../assets/icons/favourite.png')
+              : require('../../assets/icons/heart.png');
+            break;
+          case 'Store':
+            iconSource = focused
+              ? require('../../assets/icons/open.png')
+              : require('../../assets/icons/grocery-store.png');
+            break;
         }
 
         return <Image source={iconSource} style={styles.icon} />;
@@ -41,11 +45,11 @@ const MainTabs = () => (
     })}>
     <Tab.Screen
       name="Browse"
-      component={ProfileGrid}
+      component={AppDrawer}
     />
     <Tab.Screen
       name="Inbox"
-      component={ChatScreen}
+      component={ChatDrawer}
     />
     <Tab.Screen
       name="Faves"

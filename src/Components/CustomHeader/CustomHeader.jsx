@@ -15,6 +15,9 @@ const CustomHeader = ({navigation}) => {
     console.log('Selected location:', location);
   };
 
+  // console.log('Current Navigation State:', navigation.getState());
+  // console.log('Parent:', navigation.getParent());
+
   return (
     <View>
       <View style={styles.headerContainer}>
