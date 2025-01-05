@@ -11,8 +11,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../Redux/Slices/authSlice';
 
-const ProfileDrawer = () => {
-  const navigation = useNavigation();
+const ProfileDrawer = ({ navigation }) => {
+  const navigations = useNavigation();
   const dispatch = useDispatch();
   const handleLogout = () => {
     Alert.alert(
@@ -57,13 +57,13 @@ const ProfileDrawer = () => {
       {/* Options */}
       <TouchableOpacity
         style={styles.drawerItem}
-        onPress={() => navigation.navigate('MyAlbum')} // Ensure 'MyAlbum' is a defined route
+        onPress={() => navigations.navigate('MyAlbum')} // Ensure 'MyAlbum' is a defined route
       >
         <Text style={styles.drawerItemText}>My Album</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.drawerItem}
-        onPress={() => navigation.navigate('CreateEditProfile')}>
+        onPress={() => navigations.navigate('CreateEditProfile')}>
         <Text style={styles.drawerItemText}>Edit Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.drawerItem}>
