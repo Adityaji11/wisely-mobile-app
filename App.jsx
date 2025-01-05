@@ -85,11 +85,11 @@ const App = () => {
             component={MainTabs}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="ProfileDetail"
             component={ProfileDetail}
             options={{ headerShown: false, title: '' }}
-          /> */}
+          />
           <Stack.Screen
             name="MyAlbum"
             component={MyAlbum}
