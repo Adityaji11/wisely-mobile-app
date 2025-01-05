@@ -11,9 +11,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProfile, saveProfile, setProfileField } from '../../../Redux/Slices/profileSlice';
 import { Menu, Button } from 'react-native-paper'; // Import Menu for dropdown functionality
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { StackActions, useNavigation } from '@react-navigation/native';
+
 
 const CreateEditProfile = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const profile = useSelector((state) => state.profile);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -76,6 +80,11 @@ const CreateEditProfile = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+              <TouchableOpacity
+          onPress={() => navigation.dispatch(StackActions.pop(1))}
+          style={styles.iconButton}>
+          <MaterialIcons name="arrow-back" size={28} color="#fff" />
+        </TouchableOpacity>
       <Text style={styles.title}>{isEditing ? 'Edit Profile' : 'Profile'}</Text>
 
       <Image
