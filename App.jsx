@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import ProfileDetail from './src/Components/ProfileGrid/ProfileDetail/ProfileDetail';
-import MyAlbum from './src/Components/MyAlbum/MyAlbum';
+import MyAlbum from './src/Components/ProfileDrawer/MyAlbum/MyAlbum';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshSession, updateUserLocation, verifySession } from './src/Redux/Slices/authSlice';
 import { requestLocationPermission } from './src/utils/helper';

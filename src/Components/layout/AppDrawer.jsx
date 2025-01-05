@@ -1,7 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MainTabs from './MainTabs';
-import { StyleSheet } from 'react-native';
 import ProfileDrawer from '../ProfileDrawer/ProfileDrawer';
 
 const Drawer = createDrawerNavigator();
