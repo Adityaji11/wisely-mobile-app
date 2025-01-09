@@ -9,8 +9,10 @@ const cookieParser = require('cookie-parser');
 const cacheControl = require('./config/cacheControl');
 const authRoutes = require('./Routes/authRoutes');
 const userRoutes = require('./Routes/userRoutes');
+const passport = require('passport');
 
 
+app.use(passport.initialize());
 /**
  * Parse request json
  */

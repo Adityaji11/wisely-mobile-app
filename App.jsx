@@ -33,44 +33,6 @@ const App = () => {
     checkSession();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (isAuthenticated ) {
-  //     const handleLocationUpdate = async () => {
-  //       const permissionGranted = await requestLocationPermission();
-
-  //       if (permissionGranted) {
-  //         Geolocation.getCurrentPosition(
-  //           (position) => {
-  //             const coordinates = {
-  //               latitude: position.coords.latitude,
-  //               longitude: position.coords.longitude,
-  //             };
-
-  //             // Dispatch action to update location
-  //             dispatch(updateUserLocation({ coordinates }))
-  //               .unwrap()
-  //               .then(() => {
-  //                 Alert.alert('Success', 'Location updated successfully.');
-  //               })
-  //               .catch((error) => {
-  //                 Alert.alert('Error', error);
-  //               });
-  //           },
-  //           (error) => {
-  //             console.error(error);
-  //             Alert.alert('Error', 'Failed to get location.');
-  //           },
-  //           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-  //         );
-  //       } else {
-  //         Alert.alert('Permission Denied', 'Location access is required to provide a better experience.');
-  //       }
-  //     };
-
-  //     handleLocationUpdate();
-  //   }
-  // }, [isAuthenticated, dispatch]);
-
   if (status === 'loading') {
     return <></>; // Show a loading screen while verifying
   }
